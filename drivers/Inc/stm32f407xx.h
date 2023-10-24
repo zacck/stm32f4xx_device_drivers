@@ -4,10 +4,12 @@
  *  Created on: Oct 24, 2023
  *      Author: zaccko
  */
-
 #ifndef INC_STM32F407XX_H_
 #define INC_STM32F407XX_H_
 
+#include <stdint.h >
+
+#define __vo volatile
 // base addresses of flash and RAM memories
 
 #define FLASH_BASEADDR  		0x08000000U
@@ -64,7 +66,22 @@
 
 
 
+/********************* Peripheral Register Structures **************************/
 
+
+typedef struct
+{
+	__vo uint32_t MODER;
+	__vo uint32_t OTYPER;
+	__vo uint32_t OSPEEDR;
+	__vo uint32_t PUPDR;
+	__vo uint32_t IDR;
+	__vo uint32_t ODR;
+	__vo uint32_t BSRRR;
+	__vo uint32_t LCKR;
+	__vo uint32_t AFR[2];
+
+}GPIO_RegDef_t;
 
 
 
