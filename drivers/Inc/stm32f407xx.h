@@ -7,7 +7,7 @@
 #ifndef INC_STM32F407XX_H_
 #define INC_STM32F407XX_H_
 
-#include <stdint.h >
+#include <stdint.h>
 
 #define __vo volatile
 // base addresses of flash and RAM memories
@@ -171,19 +171,19 @@ typedef struct {
 #define GPIOH_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 7))
 #define GPIOI_PCLK_DI()		(RCC->AHB1ENR &= ~(1 << 8))
 
-//i2C clock enable macros
+//i2C clock disable macros
 
 #define I2C1_PCLCK_DI()		(RCC->APB1ENR &= ~(1 << 21))
 #define I2C2_PCLCK_DI()		(RCC->APB1ENR &= ~(1 << 22))
 #define I2C3_PCLCK_DI()		(RCC->APB1ENR &= ~(1 << 23))
 
-//SPI clock enable macros
+//SPI clock disable macros
 #define SPI1_PCLK_DI()		(RCC->APB2ENR &= ~(1 << 12))
 #define SPI2_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 14))
 #define SPI3_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 15))
 #define SPI4_PCLK_DI()		(RCC->APB2ENR &= ~(1 << 13))
 
-//USART Clock enable macros
+//USART Clock disable macros
 #define USART1_PCLK_DI()	(RCC->APB2ENR &= ~(1 << 4))
 #define USART2_PCLK_DI()	(RCC->APB1ENR &= ~(1 << 17))
 #define USART3_PCLK_DI()	(RCC->APB1ENR &= ~(1 << 18))
@@ -193,8 +193,18 @@ typedef struct {
 #define UART7_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 30))
 #define UART8_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 31))
 
-//SYSCFG clock enable macros
+//SYSCFG clock disable macros
 #define SYSCFG_DI()			(RCC->APB2ENR &= ~(1 << 14))
+
+
+// Convinience Macros
+#define ENABLE 1
+#define DISABLE 0
+#define SET ENABLE
+#define RESET DISABLE
+#define GPIO_PIN_SET SET
+#define GPIO_PIN_RESET RESET
+
 
 
 #endif /* INC_STM32F407XX_H_ */
