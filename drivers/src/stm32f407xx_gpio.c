@@ -23,7 +23,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 	if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG) {
 		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode
 				<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
-		pGPIOHandle->pGPIOx->MODER = temp;
+		pGPIOHandle->pGPIOx->MODER |= temp;
 
 	} else {
 		// this is an interrupt mode
@@ -31,19 +31,19 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 	temp = 0;
 	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed
 			<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
-	pGPIOHandle->pGPIOx->OSPEEDR = temp;
+	pGPIOHandle->pGPIOx->OSPEEDR |= temp;
 
 	temp = 0;
 
 	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PuPdControl
 			<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
-	pGPIOHandle->pGPIOx->PUPDR = temp;
+	pGPIOHandle->pGPIOx->PUPDR |= temp;
 
 	temp = 0;
 
 	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinOPType
 			<< pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
-	pGPIOHandle->pGPIOx->OTYPER = temp;
+	pGPIOHandle->pGPIOx->OTYPER |= temp;
 
 	temp = 0;
 
