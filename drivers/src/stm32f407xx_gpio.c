@@ -154,13 +154,44 @@ void GPIO_PCLK_CTRL(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi) {
 
 }
 //Data Read and Write
+/******
+ * @fn GPIO_ReadFromInputPin
+ *
+ * @brief  Reads from an input pin and returns the 8 bit value
+ *
+ * @params[pGPIOx] port base address
+ * @params[PinNumber] Pin Number to read from
+ *
+ * @return 8 bit integer 0 or 1
+ * @note
+ *  */
 uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber) {
+	uint8_t value;
 
-	return 0;
+	// we right shift the IDR by the pin number that way
+	// the value of the pin becomes the LSB
+	// then we use a mask to read from this bit and return the
+	// read value
+	value = (uint8_t) ((pGPIOx->IDR >> PinNumber) & 0x00000001);
+
+	return value;
 }
-uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx) {
-	return 0;
 
+/******
+ * @fn GPIO_ReadFromInputPort
+ *
+ * @brief  Reads from an input port and returns the read value
+ *
+ * @params[pGPIOx] port base address
+ *
+ * @return
+ * @note
+ *  */
+uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx) {
+	uint16_t value;
+
+	value = (uint16_t) pGPIOx->IDR;
+	return value;
 }
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber,
 		uint8_t value) {
