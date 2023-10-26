@@ -184,6 +184,7 @@ uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber) {
  *
  * @params[pGPIOx] port base address
  *
+ *
  * @return
  * @note
  *  */
@@ -193,11 +194,45 @@ uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx) {
 	value = (uint16_t) pGPIOx->IDR;
 	return value;
 }
+
+/******
+ * @fn GPIO_WriteToOutputPin
+ *
+ * @brief Writes a value to an output pin
+ *
+ * @params[pGPIOx] port base address
+ * @params[PinNumber] Pin Number to write to
+ * @params[value] value to write to the Pin
+ * @return none
+ * @note
+ *  */
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber,
-		uint8_t value) {
+		uint8_t Value)
+{
+
+	//determine what value we want to write
+	//based on set and reset macros
+	if(Value == GPIO_PIN_SET){
+		pGPIOx->ODR |= (1 << PinNumber);
+	}else{
+		pGPIOx->ODR &= ~(1 << PinNumber);
+
+	}
 
 }
-void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t value) {
+
+/******
+ * @fn GPIO_WriteToOutputPin
+ *
+ * @brief Writes a value to an output port
+ *
+ * @params[pGPIOx] port base address
+ * @params[value] value to write to the Port
+ * @return none
+ * @note
+ *  */
+void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t Value) {
+	pGPIOx->ODR = Value;
 
 }
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber) {
