@@ -222,7 +222,7 @@ void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber,
 }
 
 /******
- * @fn GPIO_WriteToOutputPin
+ * @fn GPIO_WriteToOutputPort
  *
  * @brief Writes a value to an output port
  *
@@ -235,8 +235,20 @@ void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t Value) {
 	pGPIOx->ODR = Value;
 
 }
+/******
+ * @fn GPIO_ToggleOutputPin
+ *
+ * @brief Flips the value at a given output pin
+ *
+ * @params[pGPIOx] port base address
+ * @params[PinNumber] Pin Number to Flip
+ *
+ * @return none
+ * @note
+ *  */
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber) {
-
+	//use XOR to toggle bitfield
+	pGPIOx->ODR = pGPIOx ->ODR ^ (1 << PinNumber);
 }
 
 //IRQ config and ISR handling
