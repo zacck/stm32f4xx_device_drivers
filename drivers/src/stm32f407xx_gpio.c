@@ -46,6 +46,17 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 		}
 
 		// port selection in sysconfig
+		//select the CR register
+		uint8_t cr_reg = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber/ 4;
+		//select the offset on the cr  reg offset
+		uint8_t cr_offset = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber % 4;
+		uint8_t portcode =  GPIO_BASEADDR_TO_CODE(pGPIOHandle->pGPIOx);
+
+		//enable sysconfig clk
+		SYSCFG_EN();
+
+		// configure sys cfg
+		SYSCFG->EXTICR[cr_reg] = portcode << (cr_offset * 4);
 
 		//enable exti using imr
 		EXTI -> IMR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);

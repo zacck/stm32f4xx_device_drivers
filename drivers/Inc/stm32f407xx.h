@@ -123,19 +123,32 @@ typedef struct
 
 }EXTI_RegDef_t;
 
+// SYSCFG
+typedef struct
+{
+	__vo uint32_t MEMRMP;
+	__vo uint32_t PMC;
+	__vo uint32_t EXTICR[4];
+	__vo uint32_t CMPCR;
+
+}SYSCFG_RegDef_t;
+
+
 /**** Peripheral definitions  **/
 
-#define GPIOA ((GPIO_RegDef_t *)GPIOA_BASEADDR)
-#define GPIOB ((GPIO_RegDef_t *)GPIOB_BASEADDR)
-#define GPIOC ((GPIO_RegDef_t *)GPIOC_BASEADDR)
-#define GPIOD ((GPIO_RegDef_t *)GPIOD_BASEADDR)
-#define GPIOE ((GPIO_RegDef_t *)GPIOE_BASEADDR)
-#define GPIOF ((GPIO_RegDef_t *)GPIOF_BASEADDR)
-#define GPIOG ((GPIO_RegDef_t *)GPIOG_BASEADDR)
-#define GPIOH ((GPIO_RegDef_t *)GPIOH_BASEADDR)
-#define GPIOI ((GPIO_RegDef_t *)GPIOI_BASEADDR)
-#define RCC   ((RCC_RegDef_t *)RCC_BASEADDR)
-#define EXTI  ((EXTI_RegDef_t *)EXTI_BASEADDR)
+#define GPIOA 	((GPIO_RegDef_t *)GPIOA_BASEADDR)
+#define GPIOB 	((GPIO_RegDef_t *)GPIOB_BASEADDR)
+#define GPIOC 	((GPIO_RegDef_t *)GPIOC_BASEADDR)
+#define GPIOD 	((GPIO_RegDef_t *)GPIOD_BASEADDR)
+#define GPIOE 	((GPIO_RegDef_t *)GPIOE_BASEADDR)
+#define GPIOF 	((GPIO_RegDef_t *)GPIOF_BASEADDR)
+#define GPIOG 	((GPIO_RegDef_t *)GPIOG_BASEADDR)
+#define GPIOH 	((GPIO_RegDef_t *)GPIOH_BASEADDR)
+#define GPIOI 	((GPIO_RegDef_t *)GPIOI_BASEADDR)
+#define RCC   	((RCC_RegDef_t *)RCC_BASEADDR)
+#define EXTI  	((EXTI_RegDef_t *)EXTI_BASEADDR)
+#define SYSCFG  ((SYSCFG_RegDef_t *)SYSCFG_BASEADDR)
+
 //GPIO Clock enable and disable macros
 #define GPIOA_PCLK_EN()		(RCC->AHB1ENR |= (1 << 0))
 #define GPIOB_PCLK_EN()		(RCC->AHB1ENR |= (1 << 1))
@@ -220,7 +233,26 @@ typedef struct
 #define GPIOH_REG_RESET()	do {(RCC->AHB1RSTR |= (1 << 7)); (RCC->AHB1RSTR &= ~(1 << 7));} while (0)
 #define GPIOI_REG_RESET()	do {(RCC->AHB1RSTR |= (1 << 8)); (RCC->AHB1RSTR &= ~(1 << 8));} while (0)
 
+//returns the port code given the base address
+#define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0: \
+		(x == GPIOB) ? 1: \
+		(x == GPIOC) ? 2: \
+		(x == GPIOD) ? 4: \
+		(x == GPIOE) ? 5: \
+		(x == GPIOF) ? 6: \
+		(x == GPIOG) ? 7: \
+		(x == GPIOH) ? 8: \
+		(x == GPIOI) ? 9:0)
 
+
+/***** IRQ numbers ******/
+#define IRQ_NO_EXTI0 		6
+#define IRQ_NO_EXTI1 		7
+#define IRQ_NO_EXTI2 		8
+#define IRQ_NO_EXTI3 		9
+#define IRQ_NO_EXTI4 		4
+#define IRQ_NO_EXTI9_5 		23
+#define IRQ_NO_EXTI15_10	40
 
 // Convinience Macros
 #define ENABLE 1
