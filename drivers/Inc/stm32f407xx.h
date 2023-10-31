@@ -113,6 +113,7 @@ typedef struct {
 	uint32_t RESERVED1[2];
 	__vo uint32_t AHB1ENR;
 	__vo uint32_t AHB2ENR;
+	__vo uint32_t AHB3ENR;
 	uint32_t RESERVED2;
 	__vo uint32_t APB1ENR;
 	__vo uint32_t APB2ENR;
@@ -263,12 +264,12 @@ typedef struct
 #define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0: \
 		(x == GPIOB) ? 1: \
 		(x == GPIOC) ? 2: \
-		(x == GPIOD) ? 4: \
-		(x == GPIOE) ? 5: \
-		(x == GPIOF) ? 6: \
-		(x == GPIOG) ? 7: \
-		(x == GPIOH) ? 8: \
-		(x == GPIOI) ? 9:0)
+		(x == GPIOD) ? 3: \
+		(x == GPIOE) ? 4: \
+		(x == GPIOF) ? 5: \
+		(x == GPIOG) ? 6: \
+		(x == GPIOH) ? 7: \
+		(x == GPIOI) ? 8:0)
 
 
 /***** IRQ numbers ******/
