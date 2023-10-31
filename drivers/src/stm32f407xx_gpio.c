@@ -25,10 +25,15 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode
 				<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
 		pGPIOHandle->pGPIOx->MODER &= ~(0x3
-				<< pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+				<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
 		pGPIOHandle->pGPIOx->MODER |= temp;
 
 	} else {
+		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode
+						<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
+				pGPIOHandle->pGPIOx->MODER &= ~(0x3
+						<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
+				pGPIOHandle->pGPIOx->MODER |= temp;
 		// this is an interrupt mode
 		if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_FT){
 			//set FTSR and reset RTSR
@@ -62,21 +67,26 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 		EXTI -> IMR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
 
 	}
+	//configure speed
 	temp = 0;
 	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed
 			<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
 	pGPIOHandle->pGPIOx->OSPEEDR &= ~(0x3
-			<< pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+			<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
 	pGPIOHandle->pGPIOx->OSPEEDR |= temp;
 
+
+	//configure pupd
 	temp = 0;
 
 	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PuPdControl
 			<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
 	pGPIOHandle->pGPIOx->PUPDR &= ~(0x3
-			<< pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+			<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
 	pGPIOHandle->pGPIOx->PUPDR |= temp;
 
+
+	//configure optype
 	temp = 0;
 
 	temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinOPType
@@ -296,7 +306,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber) {
  *  */
 void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi) {
 	if (EnorDi == ENABLE) {
-		// we oonly handle the first 3 registers as our MCU
+		// we only handle the first 3 registers as our MCU
 		// Can only handle 88 interrupts
 		if (IRQNumber <= 31) {
 			*NVIC_ISER0 |= (1 << IRQNumber);
