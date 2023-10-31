@@ -32,7 +32,7 @@ int main(void) {
 	GpioBtn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 	GpioBtn.GPIO_PinConfig.GPIO_PuPdControl = GPIO_PIN_PU;
 
-	//Enable the clock for port D & A
+	//Enable the clock for port D
 	GPIO_PCLK_CTRL(GPIOD, ENABLE);
 
 
@@ -40,7 +40,6 @@ int main(void) {
 	GPIO_Init(&GpioLed);
 	GPIO_Init(&GpioBtn);
 
-	GPIO_WriteToOutputPin(GPIOD,GPIO_PIN_NO_12,GPIO_PIN_RESET);
 
 	//IRQ Coonfiguration
 	GPIO_IRQPriorityConfig(IRQ_NO_EXTI3, NVIC_IRQ_PRIO15);
@@ -57,8 +56,8 @@ int main(void) {
 }
 
 void EXTI3_IRQHandler(void){
-	delay();
 	GPIO_IRQHandling(GPIO_PIN_NO_3);
+	delay();
 	GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_NO_12);
 
 }

@@ -29,11 +29,8 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 		pGPIOHandle->pGPIOx->MODER |= temp;
 
 	} else {
-		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode
+		pGPIOHandle->pGPIOx->MODER &= ~(0x3
 						<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
-				pGPIOHandle->pGPIOx->MODER &= ~(0x3
-						<< (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
-				pGPIOHandle->pGPIOx->MODER |= temp;
 		// this is an interrupt mode
 		if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_FT){
 			//set FTSR and reset RTSR
