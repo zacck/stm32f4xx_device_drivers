@@ -31,4 +31,23 @@ typedef struct
 	SPI_Config_t SPIConfig;
 }SPI_Handle_t;
 
+
+// Init and DeInit
+void SPI_Init(SPI_Handle_t *pSPIHandle);
+void SPI_DeInit(SPI_RegDef_t *pSPIx);
+
+//ClockSetup
+void SPI_PCLK_CTRL(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
+
+// Data TX and RX
+void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len);
+void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len);
+
+
+//IRQ config and ISR handling
+void SPI_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi);
+void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority);
+void SPI_IRQHandling(SPI_Handle_t *pHandle);
+
+
 #endif /* INC_STM32F407XX_SPI_H_ */
