@@ -161,6 +161,21 @@ typedef struct
 }SYSCFG_RegDef_t;
 
 
+// SPI
+typedef struct
+{
+	__vo uint32_t CR1;
+	__vo uint32_t CR2;
+	__vo uint32_t SR;
+	__vo uint32_t DR;
+	__vo uint32_t CRCPR;
+	__vo uint32_t RXCRCR;
+	__vo uint32_t TXCRCR;
+	__vo uint32_t I2SCFGR;
+	__vo uint32_t I2SPR;
+}SPI_RegDef_t;
+
+
 /**** Peripheral definitions  **/
 
 #define GPIOA 	((GPIO_RegDef_t *)GPIOA_BASEADDR)
@@ -175,6 +190,12 @@ typedef struct
 #define RCC   	((RCC_RegDef_t *)RCC_BASEADDR)
 #define EXTI  	((EXTI_RegDef_t *)EXTI_BASEADDR)
 #define SYSCFG  ((SYSCFG_RegDef_t *)SYSCFG_BASEADDR)
+#define SPI1	((SPI_RegDeg_t *) SPI1_BASEADDR)
+#define SPI2	((SPI_RegDeg_t *) SPI2_BASEADDR)
+#define SPI3	((SPI_RegDeg_t *) SPI3_BASEADDR)
+#define SPI4	((SPI_RegDeg_t *) SPI4_BASEADDR)
+
+
 
 //GPIO Clock enable and disable macros
 #define GPIOA_PCLK_EN()		(RCC->AHB1ENR |= (1 << 0))
@@ -280,6 +301,10 @@ typedef struct
 #define IRQ_NO_EXTI4 		4
 #define IRQ_NO_EXTI9_5 		23
 #define IRQ_NO_EXTI15_10	40
+#define IRQ_NO_SPI1			35
+#define IRQ_NO_SPI2			36
+#define IRQ_NO_SPI3			51
+#define IRQ_NO_SPI4			35
 
 //IRQ Priority levels
 #define NVIC_IRQ_PRIO15		15
