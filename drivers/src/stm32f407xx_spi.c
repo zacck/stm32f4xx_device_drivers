@@ -43,3 +43,19 @@ void SPI_PCLK_CTRL(SPI_RegDef_t *pSPIx, uint8_t EnorDi){
 		}
 
 }
+
+
+
+/******
+ * @fn SPI_Init
+ *
+ * @brief  Enables or Disables clock for a GPIO Port
+ *
+ * @params[pSPIx] port handle structure
+ *
+ * @return void
+ * @note
+ *  */
+
+void SPI_Init(SPI_Handle_t *pSPIHandle);
+
