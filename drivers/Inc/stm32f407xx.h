@@ -77,6 +77,7 @@
 //APB 2 Peripheral addresses
 
 #define SPI1_BASEADDR			(APB2PERIPH_BASE + 0x3000)
+#define SPI4_BASEADDR			(APB2PERIPH_BASE + 0x3400)
 #define USART1_BASEADDR			(APB2PERIPH_BASE + 0x1000)
 #define USART6_BASEADDR			(APB2PERIPH_BASE + 0x1400)
 #define EXTI_BASEADDR			(APB2PERIPH_BASE + 0x3C00)
@@ -190,10 +191,10 @@ typedef struct
 #define RCC   	((RCC_RegDef_t *)RCC_BASEADDR)
 #define EXTI  	((EXTI_RegDef_t *)EXTI_BASEADDR)
 #define SYSCFG  ((SYSCFG_RegDef_t *)SYSCFG_BASEADDR)
-#define SPI1	((SPI_RegDeg_t *) SPI1_BASEADDR)
-#define SPI2	((SPI_RegDeg_t *) SPI2_BASEADDR)
-#define SPI3	((SPI_RegDeg_t *) SPI3_BASEADDR)
-#define SPI4	((SPI_RegDeg_t *) SPI4_BASEADDR)
+#define SPI1	((SPI_RegDef_t *) SPI1_BASEADDR)
+#define SPI2	((SPI_RegDef_t *) SPI2_BASEADDR)
+#define SPI3	((SPI_RegDef_t *) SPI3_BASEADDR)
+#define SPI4	((SPI_RegDef_t *) SPI4_BASEADDR)
 
 
 
@@ -281,6 +282,12 @@ typedef struct
 #define GPIOH_REG_RESET()	do {(RCC->AHB1RSTR |= (1 << 7)); (RCC->AHB1RSTR &= ~(1 << 7));} while (0)
 #define GPIOI_REG_RESET()	do {(RCC->AHB1RSTR |= (1 << 8)); (RCC->AHB1RSTR &= ~(1 << 8));} while (0)
 
+//SPI REGISTER RESET
+#define SPI1_REG_RESET()	do {(RCC->APB2RSTR |= (1 << 12)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
+#define SPI2_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 14)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
+#define SPI3_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 15)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
+#define SPI4_REG_RESET()	do {(RCC->APB2RSTR |= (1 << 13); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
+
 //returns the port code given the base address
 #define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0: \
 		(x == GPIOB) ? 1: \
@@ -333,6 +340,7 @@ typedef struct
 #define GPIO_PIN_RESET RESET
 
 #include "stm32f407xx_gpio.h"
+#include "stm32f407xx_spi.h"
 
 
 
