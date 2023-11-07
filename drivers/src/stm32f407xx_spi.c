@@ -57,5 +57,45 @@ void SPI_PCLK_CTRL(SPI_RegDef_t *pSPIx, uint8_t EnorDi){
  * @note
  *  */
 
-void SPI_Init(SPI_Handle_t *pSPIHandle);
+void SPI_Init(SPI_Handle_t *pSPIHandle){
+	//configure CR1
+	uint32_t  tempreg  = 0;
+
+	//device mode
+	tempreg |= pSPIHandle->SPIConfig.SPI_DeviceMode << SPI_CR1_MSTR;
+
+	//bus config
+	if(pSPIHandle->SPIConfig.SPI_BUSConfig == SPI_BUS_CONFIG_FD){
+		//clear bidimode
+		tempreg &= ~(1<< SPI_CR1_MSTR);
+	} else if(pSPIHandle->SPIConfig.SPI_BUSConfig == SPI_BUS_CONFIG_HD){
+		//set bidi mode
+		tempreg |= (1<< SPI_CR1_MSTR);
+
+	} else if(pSPIHandle->SPIConfig.SPI_BUSConfig == SPI_BUS_CONFIG_SIMPLEX_RXONLY){
+		//clear bidi
+		tempreg &= ~(1<< SPI_CR1_MSTR);
+		//set rxonly
+		tempreg |= (1<< SPI_CR1_RXONLY);
+
+	}
+
+	//configure clock
+	tempreg  |= pSPIHandle->SPIConfig.SPI_SclkSpeed << SPI_CR1_BR;
+
+	// cofigure frame size
+	tempreg  |= pSPIHandle->SPIConfig.SPI_DFF << SPI_CR1_DFF;
+
+	//cpol
+	tempreg  |= pSPIHandle->SPIConfig.SPI_CPOL << SPI_CR1_CPOL;
+
+	//CPHA
+	tempreg  |= pSPIHandle->SPIConfig.SPI_CPHA << SPI_CR1_CPHA;
+
+
+
+
+
+
+}
 

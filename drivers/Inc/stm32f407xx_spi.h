@@ -49,7 +49,7 @@ typedef struct
 #define SPI_SCLK_SPEED_DIV8					2
 #define SPI_SCLK_SPEED_DIV16				3
 #define SPI_SCLK_SPEED_DIV32				4
-#define SPI_SCLK_SPEED_DIV264				5
+#define SPI_SCLK_SPEED_DIV64				5
 #define SPI_SCLK_SPEED_DIV128				6
 #define SPI_SCLK_SPEED_DIV256				7
 
