@@ -286,7 +286,7 @@ typedef struct
 #define SPI1_REG_RESET()	do {(RCC->APB2RSTR |= (1 << 12)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
 #define SPI2_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 14)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
 #define SPI3_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 15)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
-#define SPI4_REG_RESET()	do {(RCC->APB2RSTR |= (1 << 13); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
+#define SPI4_REG_RESET()	do {(RCC->APB2RSTR |= (1 << 13)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
 
 //returns the port code given the base address
 #define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0: \
