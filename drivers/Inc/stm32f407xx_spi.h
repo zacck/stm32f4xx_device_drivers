@@ -100,5 +100,6 @@ uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName);
 // Other Peipheral control APIs
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
 
 #endif /* INC_STM32F407XX_SPI_H_ */
