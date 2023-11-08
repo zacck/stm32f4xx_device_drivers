@@ -18,6 +18,9 @@
  * @note
  *  */
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
+	//ENable clock when initilizing peripherals
+	GPIO_PCLK_CTRL(pGPIOHandle->pGPIOx, ENABLE);
+
 	uint32_t temp = 0;
 	uint32_t temp1, temp2;
 	// configure mode

@@ -12,7 +12,7 @@
 
 typedef struct
 {
-	uint8_t GPIO_PinNumber;
+	__vo uint8_t GPIO_PinNumber;
 	uint8_t GPIO_PinMode; /*Possible values from @GPIO_PIN_MODES*/
 	uint8_t GPIO_PinSpeed;
 	uint8_t GPIO_PuPdControl;
