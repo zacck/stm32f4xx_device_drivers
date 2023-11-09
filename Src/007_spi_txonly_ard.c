@@ -54,7 +54,7 @@ void SPI2_Inits() {
 	SPI2Handle.pSPIx = SPI2;
 	SPI2Handle.SPIConfig.SPI_BUSConfig = SPI_BUS_CONFIG_FD;
 	SPI2Handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
-	SPI2Handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV32;
+	SPI2Handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV4;
 	SPI2Handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
 	SPI2Handle.SPIConfig.SPI_CPOL = SPI_CPOL_LOW;
 	SPI2Handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
@@ -101,7 +101,7 @@ int main(void) {
 		uint8_t dataLen = strlen(user_data);
 		SPI_SendData(SPI2, &dataLen, 1);
 
-		uint16_t value = (uint16_t)SPI2->DR;
+		//uint16_t value = (uint16_t)SPI2->DR;
 
 		//Send Data
 		SPI_SendData(SPI2, (uint8_t*) user_data, strlen(user_data));
