@@ -159,6 +159,56 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len) {
 
 	}
 }
+/******
+ * @fn SPI_ReceiveData
+ *
+ * @brief  Blocking API for Receiving Data over SPI, function will wait until all bytes are transmitted
+ *
+ * @params[pSPIx] port handle structure
+ * @params[pTxBuffer] Outbound Data Buffer
+ * @params[Len] Lenght of Data we are sending
+ *
+ * @return void
+ * @note
+ *  */
+void SPI_ReceiveData(SPI_RegDef_t*pSPIx, uint8_t *pRxBuffer, uint32_t Len){
+	while(Len > 0) {
+		//wait for RXNE
+		while (SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG) == (uint8_t)FLAG_RESET);
+
+		// check DFF bit in CR1
+		if ((pSPIx->CR1 & (1 << SPI_CR1_DFF))) {
+			//16bit DFF
+			//load data from DR to RXBuffer
+			*((uint16_t*) pRxBuffer) = pSPIx->DR;
+			//decrease length
+			Len--;
+			Len--;
+			//inc data pointer location
+			(uint16_t*) pRxBuffer++;
+		} else {
+			// 8 bit DFF
+			*(pRxBuffer) = pSPIx->DR;
+			Len--;
+			pRxBuffer++;
+		}
+
+	}
+}
+
+
+/******
+ * @fn SPI_GetFagStatus
+ *
+ * @brief  Gets a status from from t SR register
+ *
+ * @params[pSPIx] port handle structure
+ * @params[FlagName] Outbound Data Buffer
+
+ *
+ * @return void
+ * @note
+ *  */
 
 uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName) {
 	if (pSPIx->SR & FlagName) {
@@ -167,6 +217,19 @@ uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName) {
 	return FLAG_RESET;
 }
 
+
+/******
+ * @fn SPI_PeripheralControl
+ *
+ * @brief  Enables or Disables a SPI peripheral
+ *
+ * @params[pSPIx] port handle structure
+ * @params[EnorDi] Enable or Disable
+
+ *
+ * @return void
+ * @note
+ *  */
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
 	if (EnorDi == ENABLE) {
 		pSPIx->CR1 |= (1 << SPI_CR1_SPE);
@@ -175,6 +238,18 @@ void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
 	}
 }
 
+/******
+ * @fn SPI_SSICOnfig
+ *
+ * @brief  Enables or Disables SSI for a SPI
+ *
+ * @params[pSPIx] port handle structure
+ * @params[EnorDi] Enable or Disable
+
+ *
+ * @return void
+ * @note
+ *  */
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
 	if (EnorDi == ENABLE) {
 		pSPIx->CR1 |= (1 << SPI_CR1_SSI);
@@ -183,6 +258,18 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
 	}
 }
 
+/******
+ * @fn SPI_SSOEConfig
+ *
+ * @brief  Enables or Disables a SSOE for a SPI peripheral
+ *
+ * @params[pSPIx] port handle structure
+ * @params[EnorDi] Enable or Disable
+
+ *
+ * @return void
+ * @note
+ *  */
 void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
 	if (EnorDi == ENABLE) {
 		pSPIx->CR2 |= (1 << SPI_CR2_SSOE);
