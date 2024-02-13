@@ -26,8 +26,6 @@ void SPI_PCLK_CTRL(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
 			SPI2_PCLK_EN();
 		} else if (pSPIx == SPI3) {
 			SPI3_PCLK_EN();
-		} else if (pSPIx == SPI4) {
-			SPI4_PCLK_EN();
 		}
 	} else {
 		if (pSPIx == SPI1) {
@@ -36,8 +34,6 @@ void SPI_PCLK_CTRL(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
 			SPI2_PCLK_DI();
 		} else if (pSPIx == SPI3) {
 			SPI3_PCLK_DI();
-		} else if (pSPIx == SPI4) {
-			SPI4_PCLK_DI();
 		}
 
 	}
@@ -277,4 +273,78 @@ void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi) {
 		pSPIx->CR2 &= ~(1 << SPI_CR2_SSOE);
 	}
 }
+
+//IRQ config and ISR handling
+/******
+ * @fn SPI_IRQConfig
+ *
+ * @brief Flips the value at a given output pin
+ *
+ * @params[IRQNumber] IRQ number to configure
+ * @params[EnorDi] Enable or disable
+ *
+ * @return none
+ * @note
+ *  */
+void SPI_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi) {
+	if (EnorDi == ENABLE) {
+		// we only handle the first 3 registers as our MCU
+		// Can only handle 88 interrupts
+		if (IRQNumber <= 31) {
+			*NVIC_ISER0 |= (1 << IRQNumber);
+
+		} else if (IRQNumber > 31 && IRQNumber < 64) {
+			*NVIC_ISER1 |= (1 << (IRQNumber % 32));
+
+		} else if (IRQNumber >= 64 && IRQNumber < 96) {
+			*NVIC_ISER2 |= (1 << (IRQNumber % 64));
+		}
+
+	} else {
+		if (IRQNumber <= 31) {
+			*NVIC_ICER0 |= (1 << IRQNumber);
+		} else if (IRQNumber > 31 && IRQNumber < 64) {
+			*NVIC_ICER1 |= (1 << (IRQNumber % 32));
+		} else if (IRQNumber >= 64 && IRQNumber < 96) {
+			*NVIC_ICER2 |= (1 << (IRQNumber % 64));
+
+		}
+
+	}
+
+}
+
+/******
+ * @fn SPI_IRQConfig
+ *
+ * @brief Flips the value at a given output pin
+ *
+ * @params[IRQNumber] IRQ number to configure
+ * @params[IRQPriority] Priority of the given IRQ
+ *
+ * @return none
+ * @note
+ *  */
+void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
+{
+
+	//find out the IPR register to use
+	uint8_t iprx = IRQNumber / 4;
+
+	//section of register
+	uint8_t iprx_section = IRQNumber % 4;
+
+
+	//this is due to the lower nibble not being implemented in iPR regusters
+	uint8_t shift_amount = (8 * iprx_section) + (8 - NO_PR_BITS_IMPLEMENTED);
+
+
+	*(NVIC_PR_BASEADDR + iprx) |= (IRQPriority << shift_amount);
+
+
+}
+
+
+
+
 

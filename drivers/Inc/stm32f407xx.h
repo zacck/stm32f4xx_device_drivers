@@ -219,7 +219,6 @@ typedef struct
 #define SPI1_PCLK_EN()		(RCC->APB2ENR |= (1 << 12))
 #define SPI2_PCLK_EN()		(RCC->APB1ENR |= (1 << 14))
 #define SPI3_PCLK_EN()		(RCC->APB1ENR |= (1 << 15))
-#define SPI4_PCLK_EN()		(RCC->APB2ENR |= (1 << 13))
 
 //USART Clock enable macros
 #define USART1_PCLK_EN()	(RCC->APB2ENR |= (1 << 4))
@@ -256,7 +255,6 @@ typedef struct
 #define SPI1_PCLK_DI()		(RCC->APB2ENR &= ~(1 << 12))
 #define SPI2_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 14))
 #define SPI3_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 15))
-#define SPI4_PCLK_DI()		(RCC->APB2ENR &= ~(1 << 13))
 
 //USART Clock disable macros
 #define USART1_PCLK_DI()	(RCC->APB2ENR &= ~(1 << 4))
@@ -286,7 +284,6 @@ typedef struct
 #define SPI1_REG_RESET()	do {(RCC->APB2RSTR |= (1 << 12)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
 #define SPI2_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 14)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
 #define SPI3_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 15)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
-#define SPI4_REG_RESET()	do {(RCC->APB2RSTR |= (1 << 13)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
 
 //returns the port code given the base address
 #define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0: \
@@ -311,7 +308,6 @@ typedef struct
 #define IRQ_NO_SPI1			35
 #define IRQ_NO_SPI2			36
 #define IRQ_NO_SPI3			51
-#define IRQ_NO_SPI4			35
 
 //IRQ Priority levels
 #define NVIC_IRQ_PRIO15		15
