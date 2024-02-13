@@ -7,9 +7,11 @@
 #ifndef INC_STM32F407XX_H_
 #define INC_STM32F407XX_H_
 
+#include <stddef.h>
 #include <stdint.h>
 
 #define __vo volatile
+#define __weak __attribute((weak))
 
 /**************** Processor specific details *********/
 //Arm Cortex MX processor NVIC ISERx register addresses
@@ -370,7 +372,7 @@ typedef struct
 #define SPI_SR_UDR				3
 #define SPI_SR_CRCERR			4
 #define SPI_SR_MODF				5
-#define SPI_SR_QVR				6
+#define SPI_SR_OVR				6
 #define SPI_SR_BSY				7
 #define SPI_SR_FRE				8
 
