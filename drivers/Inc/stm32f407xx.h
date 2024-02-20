@@ -305,6 +305,12 @@ typedef struct
 #define SPI2_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 14)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
 #define SPI3_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 15)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
 
+
+//I2C REGISTER RESET
+#define I2C1_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 21)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
+#define I2C2_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 22)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
+#define I2C3_REG_RESET()	do {(RCC->APB1RSTR |= (1 << 23)); (RCC->AHB1RSTR &= ~(1 << 0));} while (0)
+
 //returns the port code given the base address
 #define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0: \
 		(x == GPIOB) ? 1: \

@@ -40,9 +40,30 @@ typedef struct {
 #define I2C_FM_DUTY_2		0
 #define I2C_FM_DUTY_16_9	1
 
+//APIs
+
+// Init and DeInit
+void I2C_Init(I2C_Handle_t *pI2CHandle);
+void I2C_DeInit(I2C_RegDef_t *pI2Cx);
+
+//ClockSetup
+void I2C_PCLK_CTRL(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
+
+// Data TX and RX
 
 
+//IRQ config and ISR handling
+void I2C_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi);
+void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority);
 
+// Other Peipheral control APIs
+void I2C_PeripheralControl(I2C_RegDef_t *pI2cx, uint8_t EnorDi);
+
+uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName);
+
+
+//Application callback
+void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv);
 
 
 
