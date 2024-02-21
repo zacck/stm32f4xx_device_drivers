@@ -21,7 +21,7 @@ uint32_t RCC_GetPCLK1Value(void){
 
 	// which clock
 	if(clksrc == 0){
-		SystemClock = 1600000;
+		SystemClock = 16000000;
 	} else if(clksrc == 1){
 		SystemClock = 8000000;
 	} else if(clksrc == 2){
@@ -45,10 +45,10 @@ uint32_t RCC_GetPCLK1Value(void){
 
 	temp = ((RCC->CFGR >> 10) & 0x7);
 
-	if (temp < 8) {
+	if (temp < 4) {
 		apb1p = 1;
 	} else {
-		apb1p = APB1_PreScaler[temp - 1];
+		apb1p = APB1_PreScaler[temp - 4];
 	}
 
 	// pclock1 value
