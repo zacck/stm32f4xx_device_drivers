@@ -9,6 +9,7 @@
 //array of ahb facors
 uint16_t AHB_PreScaler[9] =  {2, 4, 8, 16, 32, 64, 128, 256, 512};
 uint16_t APB1_PreScaler[4] =  {2,4,8,16};
+static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx);
 
 
 uint32_t RCC_GetPCLK1Value(void){
@@ -130,6 +131,34 @@ void I2C_Init(I2C_Handle_t *pI2CHandle){
 
 	pI2CHandle->pI2Cx->CCR = temp_reg;
 
+}
+
+
+/******
+ * @fn I2C_MasterSendData
+ *
+ * @brief  Blocking API for Master TX usinf a I2C Perpheral
+ *
+ * @params[pI2Cx] port handle structure
+ * @params[pTxBuffer] Tx Buffer with Data to send
+ * @params[Len] Number of bytes to send
+ * @params[SlaveAddr] Byte with 7 bits of address and 1 bit of R/W flag
+ *
+ * @return void
+ * @note
+ *  */
+void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr){
+	//1. Generate start condition
+	I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
+
+	// Confirm Start generartion is completed by waiting until SB is reset
+	while(I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB))
+
+}
+
+static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx){
+
+	pI2Cx->CR1 |=  (1  << I2C_CR1_START);
 }
 
 
