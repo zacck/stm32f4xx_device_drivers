@@ -152,13 +152,36 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t L
 	I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
 
 	// Confirm Start generartion is completed by waiting until SB is reset
-	while(I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB))
+	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB));
 
 }
+
+/* Private function to generate a start condition
+ * */
 
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx){
 
 	pI2Cx->CR1 |=  (1  << I2C_CR1_START);
+}
+
+/******
+ * @fn I2C_GetFagStatus
+ *
+ * @brief  Gets a status from from the SR register
+ *
+ * @params[pI2Cx] port handle structure
+ * @params[FlagName] Outbound Data Buffer
+
+ *
+ * @return void
+ * @note
+ *  */
+
+uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName) {
+	if (pI2Cx->SR1 & FlagName) {
+		return FLAG_SET;
+	}
+	return FLAG_RESET;
 }
 
 
