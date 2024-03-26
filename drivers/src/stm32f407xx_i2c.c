@@ -186,6 +186,8 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t L
 }
 
 /* Private function to execute the addressing phase
+ * @params[pI2Cx] port handle structure
+ * @params[SlaveAddr] Byte  with slave address
  * */
 static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr){
 	//make space for RW it
@@ -199,6 +201,7 @@ static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr){
 
 
 /* Private function to generate a start condition
+ * @params[pI2Cx] port handle structure
  * */
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx){
 
@@ -206,6 +209,7 @@ static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx){
 }
 
 /* Private function to clear the ADDR flag and proceed
+ * @params[pI2Cx] port handle structure
  * */
 static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx){
 	uint16_t dummyread = pI2Cx->SR1;
@@ -216,6 +220,9 @@ static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx){
 
 }
 
+/* Private function to generate the stop condition
+ * @params[pI2Cx] port handle structure
+ * */
 static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx){
 	pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
 }
