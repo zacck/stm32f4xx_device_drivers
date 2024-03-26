@@ -10,6 +10,8 @@
 uint16_t AHB_PreScaler[9] =  {2, 4, 8, 16, 32, 64, 128, 256, 512};
 uint16_t APB1_PreScaler[4] =  {2,4,8,16};
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx);
+static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr);
+static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx);
 
 
 uint32_t RCC_GetPCLK1Value(void){
@@ -148,21 +150,58 @@ void I2C_Init(I2C_Handle_t *pI2CHandle){
  * @note
  *  */
 void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr){
-	//1. Generate start condition
+	// Generate start condition
 	I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
 
 	// Confirm Start generartion is completed by waiting until SB is reset
 	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB));
 
+	// Send slave address and the R/W bit set to 0
+	I2C_ExecuteAddressPhase(pI2CHandle->pI2Cx, SlaveAddr);
+
+	// Confirm Addressing is done by checking ADDR flag
+	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_ADDR));
+
+	// clear ADDR flag to stop the clock stretching
+	I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
+
+	// send data until Len is 0
+
+
 }
+
+/* Private function to execute the addressing phase
+ * */
+static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr){
+	//make space for RW it
+	SlaveAddr = SlaveAddr << 1;
+
+	//RESET LSB to go to write mode
+	SlaveAddr &= ~(1); // SLave addr + R/w bit which is 0 now
+
+	pI2Cx->DR = SlaveAddr;
+}
+
 
 /* Private function to generate a start condition
  * */
-
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx){
 
 	pI2Cx->CR1 |=  (1  << I2C_CR1_START);
 }
+
+/* Private function to clear the ADDR flag and proceed
+ * */
+static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx){
+	uint16_t dummyread = pI2Cx->SR1;
+
+	dummyread = pI2Cx->SR2;
+
+	(void) dummyread;
+
+}
+
+
 
 /******
  * @fn I2C_GetFagStatus
