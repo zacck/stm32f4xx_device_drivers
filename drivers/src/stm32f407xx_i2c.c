@@ -12,6 +12,7 @@ uint16_t APB1_PreScaler[4] =  {2,4,8,16};
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx);
 static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr);
 static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx);
+static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx);
 
 
 uint32_t RCC_GetPCLK1Value(void){
@@ -166,6 +167,20 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t L
 	I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
 
 	// send data until Len is 0
+	while(Len > 0){
+		//check txe
+		while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_TXE));
+		pI2CHandle->pI2Cx->DR = *pTxBuffer;
+		pTxBuffer++;
+		Len--;
+	}
+
+	// Close Comms after tXE and BTF are set
+	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_TXE));
+	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_BTF));
+
+	// Generate Stop Condition and auto clear BTF
+	I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
 
 
 }
@@ -199,6 +214,10 @@ static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx){
 
 	(void) dummyread;
 
+}
+
+static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx){
+	pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
 }
 
 
