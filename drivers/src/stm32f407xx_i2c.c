@@ -77,6 +77,10 @@ uint32_t RCC_GetPCLK1Value(void){
 
 void I2C_Init(I2C_Handle_t *pI2CHandle){
 	uint32_t temp_reg = 0;
+	//Enable Clock for peripheral
+	I2C_PCLK_CTRL(pI2CHandle->pI2Cx, ENABLE);
+
+
 
 
 	// ack control
@@ -432,6 +436,38 @@ void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi) {
 		pI2Cx->CR1 |= (1 << I2C_CR1_PE);
 	} else {
 		pI2Cx->CR1 &= ~(1 << I2C_CR1_PE);
+	}
+}
+
+/******
+ * @fn I2C_PCLK_CTRL
+ *
+ * @brief  Enables the clock Disables a I2C peripheral clock
+ *
+ * @params[pI2Cx] port handle structure
+ * @params[EnorDi] Enable or Disable
+
+ *
+ * @return void
+ * @note
+ *  */
+void I2C_PCLK_CTRL(I2C_RegDef_t *pI2Cx, uint8_t EnorDi){
+	if(EnorDi == ENABLE){
+		if(pI2Cx == I2C1){
+			I2C1_PCLCK_EN();
+		} else if(pI2Cx == I2C2){
+			I2C1_PCLCK_EN();
+		} else {
+			I2C1_PCLCK_EN();
+		}
+	} else {
+		if (pI2Cx == I2C1) {
+			I2C1_PCLCK_DI();
+		} else if (pI2Cx == I2C2) {
+			I2C1_PCLCK_DI();
+		} else {
+			I2C1_PCLCK_DI();
+		}
 	}
 }
 
