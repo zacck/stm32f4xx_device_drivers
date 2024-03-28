@@ -231,17 +231,56 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_
 		//Disable Acking
 		I2C_ManageAcking(pI2CHandle->pI2Cx, DISABLE);
 
+		// Generate Stop Condition and auto clear BTF
+		I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
+
 		// clear ADDR flag
 		I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
 
 		// Generate Stop Condition and auto clear BTF
 		I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
 
+		// wait for data to be loaded to RX
+		while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_RXNE));
+
 		// read the data into buffer
 		*pRxBuffer = pI2CHandle->pI2Cx->DR;
 
 		return;
 	}
+
+	// when more than 1 byte
+	if(Len > 1) {
+		// clear ADDR
+		I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
+
+		// wait for RXNE
+		while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_RXNE));
+
+		for(uint32_t i = Len; i > 0; i--){
+
+			if(i == 2){
+				// reset ACK
+				I2C_ManageAcking(pI2CHandle->pI2Cx, DISABLE);
+
+				// stop
+				I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
+			}
+
+			// read data from register
+			*pRxBuffer = pI2CHandle->pI2Cx->DR;
+
+			pRxBuffer++;
+
+		}
+
+	}
+
+	//Leave ack as you found it
+	if(pI2CHandle->I2C_Config.I2C_ACKControl == ENABLE){
+		I2C_ManageAcking(pI2CHandle->pI2Cx, ENABLE);
+	}
+
 
 }
 
