@@ -85,7 +85,7 @@
 #define EXTI_BASEADDR			(APB2PERIPH_BASE + 0x3C00)
 #define SYSCFG_BASEADDR			(APB2PERIPH_BASE + 0x3800)
 
-/********************* Peripheral Register Structures **************************/
+/********************* Peripheral Register Structures ************************** */
 
 //GPIO
 typedef struct {

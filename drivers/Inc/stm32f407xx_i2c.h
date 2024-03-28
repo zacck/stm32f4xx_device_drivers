@@ -51,6 +51,7 @@ void I2C_PCLK_CTRL(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
 
 // Data TX and RX
 void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr);
+void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_t Len, uint8_t SlaveAddr);
 
 
 //IRQ config and ISR handling
@@ -59,8 +60,8 @@ void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority);
 
 // Other Peipheral control APIs
 void I2C_PeripheralControl(I2C_RegDef_t *pI2cx, uint8_t EnorDi);
-
 uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName);
+void I2C_ManageAcking(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
 
 //Flags
 #define I2C_FLAG_SB 		(1 << I2C_SR1_SB)
