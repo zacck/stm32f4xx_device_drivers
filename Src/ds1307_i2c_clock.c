@@ -16,7 +16,7 @@
 
 #define MY_ADDR 0x61;
 
-#define SLAVE_ADDR  0xD0
+#define SLAVE_ADDR  0x68
 
 void delay(void)
 {
@@ -28,7 +28,6 @@ I2C_Handle_t I2C1Handle;
 //rcv buffer
 uint8_t rcv_buf[32];
 
-#define device_id 0x68
 
 /*
  * PB6-> SCL
@@ -96,19 +95,39 @@ int main(void)
 	//ack bit is made 1 after PE=1
 	I2C_ManageAcking(I2C1, ENABLE);
 
+
+	commandcode = 0x00;
+
+	uint8_t rxes[2] = {0x00, 0x7F};
+
+	I2C_MasterSendData(&I2C1Handle, rxes, 2, SLAVE_ADDR);
+
+	delay();
+
+	uint8_t read_time[3];
+
+	I2C_MasterReceiveData(&I2C1Handle, read_time, 3, SLAVE_ADDR);
+
 	while(1)
 	{
 
-		commandcode = 0x00;
 
-		I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
 
-		uint8_t time[4] = {0, 3, 9, 0x60};
+		//uint8_t time[4] = {0, 3, 9, 0x60};
 
-		int time_size = (sizeof(time) / sizeof(time[0]));
+		//int time_size = (sizeof(time) / sizeof(time[0]));
+		//commandcode = 0x80;
 
-		I2C_MasterSendData(&I2C1Handle, time, time_size, SLAVE_ADDR);
+		//I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
 
+		//uint8_t read_time[3] = {0};
+
+
+
+		for (int i = 0; i < 3; i++) {
+
+			//printf("Result = %d\n", read_time[i]);
+		}
 
 	}
 

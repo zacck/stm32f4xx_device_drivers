@@ -5,7 +5,8 @@
  *      Author: zaccko
  */
 
-#include "stm32f407xx_spi.h"
+#include "stm32f407xx_i2c.h"
+#include <stdio.h>
 //array of ahb facors
 uint16_t AHB_PreScaler[9] =  {2, 4, 8, 16, 32, 64, 128, 256, 512};
 uint16_t APB1_PreScaler[4] =  {2,4,8,16};
@@ -231,15 +232,13 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_
 	// wait for addressing to finish
 	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_ADDR));
 
+	// clear ADDR flag
+	I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
+
 	if(Len == 1){
 		//Disable Acking
 		I2C_ManageAcking(pI2CHandle->pI2Cx, DISABLE);
 
-		// Generate Stop Condition and auto clear BTF
-		I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
-
-		// clear ADDR flag
-		I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
 
 		// Generate Stop Condition and auto clear BTF
 		I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
@@ -256,20 +255,22 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_
 	// when more than 1 byte
 	if(Len > 1) {
 		// clear ADDR
-		I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
+		//I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
 
-		// wait for RXNE
-		while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_RXNE));
+
 
 		for(uint32_t i = Len; i > 0; i--){
 
-			if(i == 2){
+			if(i == 1){
 				// reset ACK
 				I2C_ManageAcking(pI2CHandle->pI2Cx, DISABLE);
 
 				// stop
 				I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
 			}
+
+			// wait for RXNE
+			while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_RXNE));
 
 			// read data from register
 			*pRxBuffer = pI2CHandle->pI2Cx->DR;
@@ -344,7 +345,11 @@ static void I2C_ExecuteAddressPhaseRead(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr){
 	//SET LSB to go to read mode
 	SlaveAddr |= 1; // SLave addr + R/w bit which is 1 now
 
+	printf("Address is %#X \n", SlaveAddr);
+
 	pI2Cx->DR = SlaveAddr;
+
+
 }
 
 
